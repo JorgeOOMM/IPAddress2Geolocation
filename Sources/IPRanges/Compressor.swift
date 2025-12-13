@@ -5,9 +5,8 @@
 //
 import Foundation
 
-// Core functionality
-enum Compressor {
-    
+// swiftlint:disable legacy_objc_type
+enum Compressor { // Core functionality
     /// Compress Data using `algorithm`
     ///
     /// - Parameters:
@@ -27,7 +26,6 @@ enum Compressor {
         }
         return nil
     }
-    
     /// Decompress data using `algorithm`
     ///
     /// - Parameters:
@@ -272,3 +270,4 @@ extension Compressor {
         return false
     }
 }
+// swiftlint:enable legacy_objc_type

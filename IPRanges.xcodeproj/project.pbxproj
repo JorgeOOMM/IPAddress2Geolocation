@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0460E8AF2EEB3CEF0093C29E /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 0460E8AE2EEB3CEF0093C29E /* ArgumentParser */; };
+		04843D052EED2E96000DC5FE /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = 04843D042EED2E96000DC5FE /* Collections */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,23 +53,46 @@
 			membershipExceptions = (
 				"IPRanges/Array+Data.swift",
 				IPRanges/Compressor.swift,
+				IPRanges/Constants.swift,
 				IPRanges/Countries.swift,
 				IPRanges/DataFile.swift,
 				"IPRanges/FileManager+Extension.swift",
-				IPRanges/IPRangesConverter.swift,
-				IPRanges/IPRangesTextFileLineLoader.swift,
-				IPRanges/LineReader.swift,
+				IPRanges/IPAddressConverter.swift,
 				IPRanges/Model.swift,
+				IPRanges/Protocols.swift,
 				"IPRanges/String+Slice.swift",
 				"IPRanges/Test+Time.swift",
+			);
+			target = 042E87472EEA56000084B3F8 /* Converter */;
+		};
+		04843D012EED1AAA000DC5FE /* Exceptions for "Converter" folder in "IPRanges" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"CSV/IP-COUNTRY.7z",
+				IPRangesConverter.swift,
+				LineReader.swift,
+				main.swift,
+			);
+			target = 04F49B7D2EE7425E005D2F21 /* IPRanges */;
+		};
+		04843D022EED1AAA000DC5FE /* Exceptions for "Converter" folder in "Converter" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				IPRangesConverter.swift,
+				LineReader.swift,
+				main.swift,
 			);
 			target = 042E87472EEA56000084B3F8 /* Converter */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		042E87492EEA56000084B3F8 /* Converter */ = {
+		04843CFB2EED1AA9000DC5FE /* Converter */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				04843D012EED1AAA000DC5FE /* Exceptions for "Converter" folder in "IPRanges" target */,
+				04843D022EED1AAA000DC5FE /* Exceptions for "Converter" folder in "Converter" target */,
+			);
 			path = Converter;
 			sourceTree = "<group>";
 		};
@@ -97,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04843D052EED2E96000DC5FE /* Collections in Frameworks */,
 				0460E8AF2EEB3CEF0093C29E /* ArgumentParser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -128,10 +153,10 @@
 		04F49B752EE7425E005D2F21 = {
 			isa = PBXGroup;
 			children = (
+				04843CFB2EED1AA9000DC5FE /* Converter */,
 				04F49B802EE7425E005D2F21 /* Sources */,
 				04F49B912EE74260005D2F21 /* IPRangesTests */,
 				04F49B9B2EE74260005D2F21 /* IPRangesUITests */,
-				042E87492EEA56000084B3F8 /* Converter */,
 				04F49B7F2EE7425E005D2F21 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -162,12 +187,10 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				042E87492EEA56000084B3F8 /* Converter */,
-			);
 			name = Converter;
 			packageProductDependencies = (
 				0460E8AE2EEB3CEF0093C29E /* ArgumentParser */,
+				04843D042EED2E96000DC5FE /* Collections */,
 			);
 			productName = Conversion;
 			productReference = 042E87482EEA56000084B3F8 /* Converter */;
@@ -187,6 +210,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				04843CFB2EED1AA9000DC5FE /* Converter */,
 				04F49B802EE7425E005D2F21 /* Sources */,
 			);
 			name = IPRanges;
@@ -279,6 +303,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				0460E8AD2EEB3CEF0093C29E /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+				04843D032EED2E96000DC5FE /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 04F49B7F2EE7425E005D2F21 /* Products */;
@@ -717,6 +742,14 @@
 				minimumVersion = 1.6.2;
 			};
 		};
+		04843D032EED2E96000DC5FE /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -724,6 +757,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0460E8AD2EEB3CEF0093C29E /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
 			productName = ArgumentParser;
+		};
+		04843D042EED2E96000DC5FE /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04843D032EED2E96000DC5FE /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

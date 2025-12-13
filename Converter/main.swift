@@ -7,6 +7,13 @@
 import Foundation
 import ArgumentParser
 
+// Optimization for reduce the size of the original CSV file
+//
+// - Remove the double quotes.
+//
+// cat IP-COUNTRY.csv | tr -d \" > IP-COUNTRY.csv
+//
+
 // MARK: Converter
 struct Converter: ParsableCommand {
     @Argument(help: "The path of the file to parse (default: `\\.IP-COUNTRY.csv`).")
@@ -22,7 +29,7 @@ struct Converter: ParsableCommand {
     fileprivate var defaultDirectory: URL {
         return URL.currentDirectory()
     }
-    // Default input file is defuault input file directory\\IP-COUNTRY.csv
+    // Default input file is default input file directory \\IP-COUNTRY.csv
     fileprivate var inputFile: URL {
         guard let input = input else {
             return defaultDirectory.appendingPathComponent("IP-COUNTRY.csv")
@@ -80,19 +87,17 @@ struct Converter: ParsableCommand {
     ///
     fileprivate func performConversion(inputFile: URL) {
         let converter = IPRangesConverter()
-        let loading = Date()
         print("Loading conversion data.")
         if converter.load(from: inputFile) {
-            print("Conversion data has been loaded sucessfully in \(Date().timeIntervalSince(loading)).")
+            print("Conversion data has been loaded sucessfully.")
             let converting = Date()
-            if converter.save(to: outputDirectory) {
+            if converter.runAndSave(to: outputDirectory) {
                 print("Conversion has been completed sucessfully in \(Date().timeIntervalSince(converting))")
             }
         } else {
             print("Conversion failed. Unexpected error.")
         }
     }
-    
 
     mutating func run() throws {
 

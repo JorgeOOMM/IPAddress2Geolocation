@@ -5,6 +5,7 @@
 //
 import Foundation
 
+// swiftlint:disable legacy_objc_type
 class Countries {
     var locale: Locale
     
@@ -50,3 +51,5 @@ class Countries {
 extension Countries {
     static var shared = Countries(identifier: "es_ES")
 }
+
+// swiftlint:enable legacy_objc_type
