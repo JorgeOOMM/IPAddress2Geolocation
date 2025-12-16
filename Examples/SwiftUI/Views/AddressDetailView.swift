@@ -8,6 +8,7 @@
 import CoreLocation
 import MapKit
 import SwiftUI
+import GeolocationLookup
 
 // MARK: MapLocation
 struct MapLocation: Identifiable {

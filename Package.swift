@@ -44,7 +44,8 @@ let package = Package(
     	.executableTarget(
      	    name: "SwiftUI",
             dependencies: ["GeolocationLookup"],
-      	    path: "Examples/SwiftUI"),
+      	    path: "Examples/SwiftUI"
+        ),
         .testTarget(
             name: "GeolocationLookupTests",
             dependencies: ["GeolocationLookup"]
