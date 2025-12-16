@@ -38,7 +38,7 @@ class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
     /// Open the country binary file
     fileprivate func openBinaryFile() throws {
         let dataURL =
-        URL.documentsDirectory
+        URL.documentsDirectoryURL
             .appendingPathComponent(Constants.fileCountry)
             .appendingPathExtension(Constants.fileExtension)
         
@@ -49,7 +49,7 @@ class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
     /// Load the file of subdivisions strings
     fileprivate func loadFileStrings() -> Bool {
         let dataURLSubdivs =
-        URL.documentsDirectory
+        URL.documentsDirectoryURL
             .appendingPathComponent(Constants.fileSubdivs)
             .appendingPathExtension(Constants.fileExtension)
         

@@ -52,7 +52,7 @@ enum DataFile {
     ///
     /// - Returns: Bool
     static func writeToDocuments( fileName: String, data: Data) -> Bool {
-        let url = URL.documentsDirectory.appending(path: fileName)
+        let url = URL.documentsDirectoryURL.appendingPathComponent(fileName)
         return DataFile.write(output: url, data: data)
     }
     
@@ -62,7 +62,7 @@ enum DataFile {
     ///
     /// - Returns: Data?
     static func readFromDocuments( fileName: String) -> Data? {
-        let url = URL.documentsDirectory.appending(path: fileName)
+        let url = URL.documentsDirectoryURL.appendingPathComponent(fileName)
         return DataFile.read(from: url)
     }
     

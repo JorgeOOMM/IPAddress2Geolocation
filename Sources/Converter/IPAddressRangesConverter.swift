@@ -167,7 +167,7 @@ extension IPAddressRangesConverter: ConverterProtocol {
     /// - Parameter url: File URL to process
     ///
     func load(from url: URL) -> Bool {
-        guard let lineReader = LineReader(from: url.path()) else {
+        guard let lineReader = LineReader(from: url.path) else {
             print("Unable open file \(url).")
             return false
         }

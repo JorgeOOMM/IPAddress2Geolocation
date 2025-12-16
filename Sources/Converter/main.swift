@@ -56,7 +56,7 @@ struct Converter: ParsableCommand {
     ///
     /// - Returns: Output file URL
     fileprivate func compressFile(inputFile: URL) -> URL? {
-        let outputFile = outputDirectory.appending(path: inputFile.lastPathComponent).deletingPathExtension().appendingPathExtension("7z")
+        let outputFile = outputDirectory.appendingPathComponent( inputFile.lastPathComponent).deletingPathExtension().appendingPathExtension("7z")
         let decompressing = Date()
         if Compressor.compress(from: inputFile, output: outputFile) {
             print("The input file `\(inputFile.lastPathComponent)` has been compressed into `\(outputFile.lastPathComponent)` sucessfully in \(Date().timeIntervalSince(decompressing)).")
@@ -74,7 +74,7 @@ struct Converter: ParsableCommand {
     ///
     /// - Returns: Output file URL
     fileprivate func decompressFile(inputFile: URL) -> URL? {
-        let outputFile = outputDirectory.appending(path: inputFile.lastPathComponent).deletingPathExtension().appendingPathExtension("csv")
+        let outputFile = outputDirectory.appendingPathComponent( inputFile.lastPathComponent).deletingPathExtension().appendingPathExtension("csv")
         let compressing = Date()
         if Compressor.decompress(from: inputFile, output: outputFile) {
             print("The input file `\(inputFile.lastPathComponent)` has been decompressed into `\(outputFile.lastPathComponent)` sucessfully in \(Date().timeIntervalSince(compressing)).")
@@ -106,7 +106,7 @@ struct Converter: ParsableCommand {
     mutating func run() throws {
 
         // Create the output directory if needed
-        if FileManager.default.create(directory: outputDirectory.path()) {
+        if FileManager.default.create(directory: outputDirectory.path) {
             print("Output directory `\(outputDirectory)` was created sucessfully.")
         }
         

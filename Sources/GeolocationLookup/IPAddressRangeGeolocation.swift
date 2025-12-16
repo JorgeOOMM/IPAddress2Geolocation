@@ -83,9 +83,9 @@ extension IPAddressRangeGeolocation: IPAddressRangeLocatorProtocol {
     /// - Returns: Bool
     ///
     fileprivate func copyResourcesIfNeeded(fileName: String, withExtension: String) -> Bool {
-        let path = URL.documentsDirectory.appendingPathComponent("\(fileName).\(withExtension)")
+        let path = URL.documentsDirectoryURL.appendingPathComponent("\(fileName).\(withExtension)")
         var result = true
-        if !FileManager.default.fileExists(atPath: path.path()) {
+        if !FileManager.default.fileExists(atPath: path.path) {
             // Decompress the file
             if !Compressor.decompressFromResources(
                 fileName: fileName,

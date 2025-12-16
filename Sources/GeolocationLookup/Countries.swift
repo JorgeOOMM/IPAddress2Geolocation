@@ -51,7 +51,7 @@ class Countries {
 }
 
 extension Countries {
-    static var shared = Countries(identifier: "en_EN")
+    static let shared = Countries(identifier: "en_EN")
 }
 
 // swiftlint:enable legacy_objc_type
