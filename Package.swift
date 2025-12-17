@@ -21,7 +21,11 @@ let package = Package(
         .package(
           url: "https://github.com/apple/swift-collections.git",
           .upToNextMajor(from: "1.3.0")
-        )
+        ),
+	.package(
+	url: "https://github.com/apple/swift-argument-parser", 
+	.upToNextMajor(from: "1.3.0")
+	)
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -36,15 +40,10 @@ let package = Package(
         .executableTarget(
             name: "Converter",
             dependencies: [
-                .product(name: "OrderedCollections", package: "swift-collections")
+                .product(name: "OrderedCollections", package: "swift-collections"),
+      		.product(name: "ArgumentParser", package: "swift-argument-parser")
             ],
             exclude: ["IP-COUNTRY.7z"]
-        ),
-    	// Examples
-    	.executableTarget(
-     	    name: "SwiftUI",
-            dependencies: ["GeolocationLookup"],
-      	    path: "Examples/SwiftUI"
         ),
         .testTarget(
             name: "GeolocationLookupTests",
