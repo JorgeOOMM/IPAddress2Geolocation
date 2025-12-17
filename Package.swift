@@ -13,19 +13,19 @@ let package = Package(
             targets: ["IPAddress2City"]),
         .executable(
             name: "Converter",
-            targets: ["Converter"])
+            targets: ["Converter"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(
-          url: "https://github.com/apple/swift-collections.git",
-          .upToNextMajor(from: "1.3.0")
+            url: "https://github.com/apple/swift-collections.git",
+            .upToNextMajor(from: "1.3.0")
         ),
-	.package(
-	url: "https://github.com/apple/swift-argument-parser", 
-	.upToNextMajor(from: "1.3.0")
-	)
+        .package(
+            url: "https://github.com/apple/swift-argument-parser",
+                .upToNextMajor(from: "1.3.0")
+        )
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -42,13 +42,15 @@ let package = Package(
             dependencies: [
                 .product(name: "OrderedCollections", package: "swift-collections"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                "IPAddress2City"
+                "IPAddress2City",
             ],
             exclude: ["IP-COUNTRY.7z"]
         ),
         .testTarget(
             name: "IPAddress2CityTests",
-            dependencies: ["IPAddress2City"]
+            dependencies: [
+                "IPAddress2City",
+            ]
         ),
     ]
 )
