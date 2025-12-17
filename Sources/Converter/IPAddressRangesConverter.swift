@@ -7,6 +7,7 @@
 
 import Foundation
 import OrderedCollections
+import GeolocationLookup
 
 
 // MARK: ConverterProtocol protocol
@@ -133,7 +134,7 @@ extension IPAddressRangesConverter: ConverterProtocol {
             //    item.replacingOccurrences(of: "\"", with: "")
             //}
             //assert(item.count == 5)
-            if let alpha2Idx = Countries.shared.indexes[String(item[2])] {
+            if let alpha2Idx = Countries.shared.index(for: String(item[2])) {
                 var subdivIdx: Int?
                 if let result = processSubdiv(subdiv: String(item[4])) {
                     // Add the subdivision line

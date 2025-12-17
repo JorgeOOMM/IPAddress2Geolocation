@@ -6,6 +6,7 @@
 
 import Foundation
 import ArgumentParser
+import GeolocationLookup
 
 // Optimization for reduce the size of the original CSV file
 //

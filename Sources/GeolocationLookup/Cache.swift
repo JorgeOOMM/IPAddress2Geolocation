@@ -4,7 +4,8 @@
 //  Created by Mac on 18/9/24.
 //  Note: caching-in-swift
 //
-import UIKit
+import Foundation
+
 final class Cache<Key: Hashable, Value> {
     private let wrapped = NSCache<WrappedKey, Entry>()
     private let dateProvider: (() -> Date)?

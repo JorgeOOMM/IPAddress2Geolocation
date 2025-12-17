@@ -6,7 +6,7 @@
 import Foundation
 
 // swiftlint:disable legacy_objc_type
-final class Countries {
+public final class Countries {
     let locale: Locale
     private var indexes: [String: UInt32] = [:]
     private var countries: [String: String] = [:]
@@ -38,16 +38,19 @@ final class Countries {
         return output
     }
     
-    func name(for code: String) -> String? {
+    public func name(for code: String) -> String? {
         return countries[code]
     }
-    func index(for code: UInt32) -> String? {
-        return indexes.key(from: code)
+    public func index(for code: String) -> UInt32? {
+        return indexes[code]
+    }
+    public func code(for index: UInt32) -> String? {
+        return indexes.key(from: index)
     }
 }
 
 extension Countries {
-    nonisolated(unsafe) static let shared = Countries(identifier: "en_EN")
+    nonisolated(unsafe) public static let shared = Countries(identifier: "en_EN")
 }
 
 // swiftlint:enable legacy_objc_type

@@ -6,7 +6,7 @@
 import Foundation
 
 // swiftlint:disable legacy_objc_type
-enum Compressor { // Core functionality
+public enum Compressor { // Core functionality
     /// Compress Data using `algorithm`
     ///
     /// - Parameters:
@@ -75,7 +75,7 @@ extension Compressor {
     ///   - algorithm: NSData.CompressionAlgorithm
     ///
     /// - Returns: Bool
-    static func compress(
+    public static func compress(
         from url: URL,
         output: URL,
         algorithm: NSData.CompressionAlgorithm = .lzma
@@ -112,7 +112,7 @@ extension Compressor {
     ///   - algorithm: NSData.CompressionAlgorithm
     ///
     /// - Returns: Bool
-    static func decompress(
+    public static func decompress(
         from url: URL,
         output: URL,
         algorithm: NSData.CompressionAlgorithm = .lzma

@@ -67,7 +67,7 @@ public class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
     ///
     /// - Returns: IPRangeLocation
     func recordLocation(from record: IPRangeLocationIdx) throws -> IPRangeLocation {
-        guard let alpha2 = Countries.shared.index(for: UInt32(record.alpha2Idx)) else {
+        guard let alpha2 = Countries.shared.code(for: UInt32(record.alpha2Idx)) else {
             assertionFailure("Unexpected invalid index for alpha2.")
             throw GeolocationLookupError.alpha2IndexError
         }

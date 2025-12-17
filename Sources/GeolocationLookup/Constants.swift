@@ -5,8 +5,8 @@
 //  Created by Mac on 12/12/25.
 //
 
-enum Constants {
-    static let fileExtension = "bin"
-    static let fileCountry = "IPCOUNTRY"
-    static let fileSubdivs = "SUBDIVS"
+public enum Constants {
+    public static let fileExtension = "bin"
+    public static let fileCountry = "IPCOUNTRY"
+    public static let fileSubdivs = "SUBDIVS"
 }

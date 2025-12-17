@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "GeolocationLookup",
-    platforms: [.iOS(.v14), .macOS(.v10_14), .watchOS(.v5), .tvOS(.v12)],
+    platforms: [.iOS(.v14), .macOS(.v13), .watchOS(.v5), .tvOS(.v12)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
@@ -41,7 +41,8 @@ let package = Package(
             name: "Converter",
             dependencies: [
                 .product(name: "OrderedCollections", package: "swift-collections"),
-      		.product(name: "ArgumentParser", package: "swift-argument-parser")
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                "GeolocationLookup"
             ],
             exclude: ["IP-COUNTRY.7z"]
         ),

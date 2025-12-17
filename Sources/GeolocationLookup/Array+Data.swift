@@ -53,7 +53,7 @@ func convertToData<T>(from array: [T]) -> Data {
 ///   - compress: Bool
 ///  - Throws: description
 ///
-func arrayToFile<T>(array: [T], output url: URL, compress: Bool = true) -> Bool {
+public func arrayToFile<T>(array: [T], output url: URL, compress: Bool = true) -> Bool {
     let data = convertToData(from: array)
     if compress {
         if let result = Compressor.compress(content: data) {
@@ -74,7 +74,7 @@ func arrayToFile<T>(array: [T], output url: URL, compress: Bool = true) -> Bool 
 /// - Throws: description
 /// - Returns: [T]
 ///
-func fileToArray<T>(from url: URL, compress: Bool = true) -> [T] {
+public func fileToArray<T>(from url: URL, compress: Bool = true) -> [T] {
     if let data = DataFile.read(from: url) {
         if compress {
             if let result = Compressor.decompress(content: data) {
@@ -96,7 +96,7 @@ func fileToArray<T>(from url: URL, compress: Bool = true) -> [T] {
 /// 
 /// - Returns: Bool
 ///
-func arrayToFileString(array: [String], output url: URL, compress: Bool = true) -> Bool {
+public func arrayToFileString(array: [String], output url: URL, compress: Bool = true) -> Bool {
     let string = array.joined(separator: "\n")
     if let data = string.data(using: .ascii) {
         if compress {
@@ -117,7 +117,7 @@ func arrayToFileString(array: [String], output url: URL, compress: Bool = true) 
 ///
 /// - Returns: [Substring]
 ///
-func fileStringToArray(from url: URL, compress: Bool = true) -> [Substring] {
+public func fileStringToArray(from url: URL, compress: Bool = true) -> [Substring] {
     if let data = DataFile.read(from: url) {
         if compress {
             if let result = Compressor.decompress(content: data) {
