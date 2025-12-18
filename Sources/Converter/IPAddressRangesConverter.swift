@@ -129,14 +129,10 @@ extension IPAddressRangesConverter: ConverterProtocol {
         ranges.reserveCapacity(3192665)
         
         for line in lineReader {
-            let item = line.split(separator: ",", maxSplits: 4)
-            //.map { item in
-            //    item.replacingOccurrences(of: "\"", with: "")
-            //}
-            //assert(item.count == 5)
+            let item = line.split(separator: ",", maxSplits: 3)
             if let alpha2Idx = Countries.shared.index(for: String(item[2])) {
                 var subdivIdx: Int?
-                if let result = processSubdiv(subdiv: String(item[4])) {
+                if let result = processSubdiv(subdiv: String(item[3])) {
                     // Add the subdivision line
                     uniqueSubdivs.append(result)
                     // Get the index of the subdivision at the array

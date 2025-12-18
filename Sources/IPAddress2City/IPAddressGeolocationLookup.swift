@@ -7,7 +7,7 @@
 import Foundation
 
 // MARK: FileCacheable
-/// IPAddress2City is a class that locate a IPRange types from IP Address string
+/// IPAddress2City is a class thast locate a IPRange types from IP Address string
 public class IPAddressGeolocationLookup: FileCacheable {
     
     typealias Handler = (Result<IPRangeLocation, Error>) -> Void
@@ -32,7 +32,9 @@ extension IPAddressGeolocationLookup {
             // Cache hit
             return cached
         }
-        guard let addressUInt32 = locator.stringIPToIPNumber(string: address) else {
+        
+        let addressUInt32 = locator.stringIPToIPNumber(string: address)
+        guard addressUInt32 > 0 else {
             print("Conversion of address \(address) failed.")
             throw IPAddress2CityError.conversionError
         }

@@ -18,10 +18,12 @@ class IPAddressRangeGenerator: IPAddressConverterLE, IPAddressGenerator {
         guard !(lower.isEmpty || upper.isEmpty) else {
             return []
         }
-        guard let lower = stringIPToIPNumber(string: lower) else {
+        let lower = stringIPToIPNumber(string: lower)
+        guard lower > 0 else {
             return []
         }
-        guard let upper = stringIPToIPNumber(string: upper) else {
+        let upper = stringIPToIPNumber(string: upper)
+        guard upper > 0 else {
             return []
         }
         guard lower < upper else {

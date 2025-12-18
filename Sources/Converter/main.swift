@@ -14,8 +14,9 @@ import IPAddress2City
 //
 // cat IP-COUNTRY.csv | tr -d \" > IP-COUNTRY.csv
 //
-// TODO: Remove the unnused alpha3 field
+// - Remove the unnused alpha3 field
 //
+// cat IP-COUNTRY.cvs | sed -E 's/,[A-Z][A-Z][A-Z],/,/' > IP-COUNTRY.csv
 
 // MARK: Converter
 struct Converter: ParsableCommand {
@@ -28,25 +29,6 @@ struct Converter: ParsableCommand {
     @Flag(help: "Compress the input file with lzma (`.7z`).")
     var compress: Bool = false
     
-    // Default directory is current directory
-    fileprivate var defaultDirectory: URL {
-        return URL.currentDirectory()
-    }
-    // Default input file is in default input directory
-    fileprivate var inputFile: URL {
-        guard let input = input else {
-            return defaultDirectory.appendingPathComponent("IP-COUNTRY.csv")
-        }
-        return URL(fileURLWithPath: input)
-    }
-    // Default output directory is the same of the input file
-    fileprivate var outputDirectory: URL {
-        guard let output = output else {
-            return inputFile.deletingLastPathComponent()
-        }
-        return URL(fileURLWithPath: output, isDirectory: true)
-    }
-    
     /// Compress the input `csv`file .
     /// 
     /// - Parameter inputFile: input `csv` file.
@@ -56,14 +38,13 @@ struct Converter: ParsableCommand {
     /// If the outputDirectory is nil the output  `.7z` file will be in the same directory and with the same name that the original file.
     ///
     /// - Returns: Output file URL
-    fileprivate func compressFile(inputFile: URL) -> URL? {
-        let outputFile = outputDirectory.appendingPathComponent( inputFile.lastPathComponent).deletingPathExtension().appendingPathExtension("7z")
+    fileprivate func compressFile(inputFile: URL,  outputFile: URL) -> Bool {
         let decompressing = Date()
         if Compressor.compress(from: inputFile, output: outputFile) {
             print("The input file `\(inputFile.lastPathComponent)` has been compressed into `\(outputFile.lastPathComponent)` sucessfully in \(Date().timeIntervalSince(decompressing)).")
-            return outputFile
+            return true
         }
-        return nil
+        return false
     }
     /// Compress the input `.7z`file .
     /// 
@@ -74,21 +55,20 @@ struct Converter: ParsableCommand {
     ///   If the outputDirectory is nil the output  `.csv` file will be in the same directory and with the same name that the original file.
     ///
     /// - Returns: Output file URL
-    fileprivate func decompressFile(inputFile: URL) -> URL? {
-        let outputFile = outputDirectory.appendingPathComponent( inputFile.lastPathComponent).deletingPathExtension().appendingPathExtension("csv")
+    fileprivate func decompressFile(inputFile: URL, outputFile: URL) -> Bool {
         let compressing = Date()
         if Compressor.decompress(from: inputFile, output: outputFile) {
             print("The input file `\(inputFile.lastPathComponent)` has been decompressed into `\(outputFile.lastPathComponent)` sucessfully in \(Date().timeIntervalSince(compressing)).")
-            return outputFile
+            return true
         }
-        return nil
+        return false
     }
     
     /// Perform the data conversion
     ///
     /// - Parameter inputFile:  Input `.cvs` file.
     ///
-    fileprivate func performConversion(inputFile: URL) {
+    fileprivate func performConversion(inputFile: URL, outputDirectory: URL) {
         let converter = IPAddressRangesConverter()
         print("Loading conversion data.")
         if converter.load(from: inputFile) {
@@ -106,29 +86,69 @@ struct Converter: ParsableCommand {
 
     mutating func run() throws {
 
-        // Create the output directory if needed
-        if FileManager.default.create(directory: outputDirectory.path) {
-            print("Output directory `\(outputDirectory)` was created sucessfully.")
+        var inputFile: URL
+        if let input = input {
+            inputFile = URL(fileURLWithPath: input)
+        } else {
+            // No input file was selected
+            inputFile = URL.currentDirectory().appendingPathComponent("IP-COUNTRY.csv")
+            if decompress {
+                inputFile = URL.currentDirectory().appendingPathComponent("IP-COUNTRY.7z")
+            }
+        }
+        
+        // Check if the input file exist in disk
+        if !FileManager.default.fileExists(atPath: inputFile.path) {
+            throw ValidationError("Input file `\(inputFile)` not found.")
+        }
+        
+        var outputDirectory: URL
+        if let output = output {
+            outputDirectory = URL(fileURLWithPath: output, isDirectory: true)
+            // Create the output directory if needed
+            if FileManager.default.createDirectoryIfNeeded(directory: outputDirectory.path) {
+                print("Output directory `\(outputDirectory)` is valid.")
+            } else {
+                // Check if the output directory exist in disk
+                throw ValidationError("Invalid output directory `\(outputDirectory)`.")
+            }
+        } else {
+            outputDirectory = inputFile.deletingLastPathComponent()
+        }
+        
+        var outputFile: URL?
+        if compress {
+            outputFile = outputDirectory.appendingPathComponent("IP-COUNTRY.7z")
+        } else if decompress {
+            outputFile = outputDirectory.appendingPathComponent("IP-COUNTRY.csv")
+        } else {
+            // Without output file
         }
         
         // Compress input file if needed
         if compress {
             // $0 INPUT.csv --compress
-            print("Compressing `\(inputFile)` with lzma to `\(outputDirectory)` started.")
-            if let outputFile = compressFile(inputFile: inputFile) {
-                print("The input file `\(inputFile.lastPathComponent)` has been compressed sucessfully `\(outputFile.lastPathComponent)`.")
+            if let outputFile = outputFile {
+                print("Compressing `\(inputFile)` with lzma to `\(outputFile)` started.")
+                if compressFile(inputFile: inputFile, outputFile: outputFile) {
+                    print("The input file `\(inputFile.lastPathComponent)` has been compressed sucessfully `\(outputFile.lastPathComponent)`.")
+                }
             }
         // Decompress input file if needed
         } else if decompress {
             // $0 INPUT.7z --decompress
-            print("Decompressing `\(inputFile)` with lzma to `\(outputDirectory)` started.")
-            if let outputFile = decompressFile(inputFile: inputFile) {
-                performConversion(inputFile: outputFile)
+            if let outputFile = outputFile {
+                print("Decompressing `\(inputFile)` with lzma to `\(outputFile)` started.")
+                
+                if decompressFile(inputFile: inputFile,
+                                  outputFile: outputFile) {
+                    performConversion(inputFile: outputFile, outputDirectory: outputDirectory)
+                }
             }
         }  else {
             // $0 \.IP-COUNTRY.csv \.
             print("Conversion of `\(inputFile)` to `\(outputDirectory)` started.")
-            performConversion(inputFile: inputFile)
+            performConversion(inputFile: inputFile, outputDirectory: outputDirectory)
         }
     }
 }

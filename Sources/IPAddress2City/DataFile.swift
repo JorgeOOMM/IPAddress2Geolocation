@@ -15,8 +15,10 @@ import Foundation
 enum DataFile {
     ///  Read file from URL
     ///
-    /// - Parameter url:The file URL to read from
-    /// - Returns: Data?
+    ///  - Parameters:
+    ///  - Parameter url:The file URL to read from
+    ///
+    ///  - Returns: Data?
     ///
     static func read( from url: URL) -> Data? {
         do {
@@ -29,9 +31,9 @@ enum DataFile {
     }
     ///  Write file to URL
     ///
-    /// - Parameters:
-    ///   - url: The file URL to write to
-    ///   - data:  Data
+    ///   - Parameters:
+    ///   - Parameter  url: The file URL to write to
+    ///   - Parameter  data:  Data
     ///
     /// - Returns: Bool
     static func write(output url: URL, data: Data) -> Bool {
@@ -47,8 +49,8 @@ enum DataFile {
     ///  Write file to Documents
     ///
     /// - Parameters:
-    ///   - fileName: The file name to write to
-    ///   - data:  Data
+    /// - Parameter fileName: The file name to write to
+    /// - Parameter data:  Data
     ///
     /// - Returns: Bool
     static func writeToDocuments( fileName: String, data: Data) -> Bool {
@@ -58,7 +60,8 @@ enum DataFile {
     
     ///  Read file from Documents
     ///
-    /// - Parameter fileName: The file name to read from
+    ///  - Parameters:
+    ///  - Parameter fileName: The file name to read from
     ///
     /// - Returns: Data?
     static func readFromDocuments( fileName: String) -> Data? {
@@ -66,25 +69,27 @@ enum DataFile {
         return DataFile.read(from: url)
     }
     
-    ///  Read file from Resources
-    ///
-    /// - Parameters:
-    /// - Parameter fileName:The file name to read from
-    ///   - withExtension: String
-    ///   - subpath: String?
-    ///
-    /// - Returns: Data?
+    /// Read file from Resources
+    /// 
+    ///  - Parameters:
+    ///  - Parameter fileName:The file name to read from
+    ///  - Parameter withExtension: withExtension
+    ///  - Parameter subpath: subpath
+    ///  - Parameter bundle: bundle
+    /// 
+    ///  - Returns: Data?
     static func readFromResources(
         fileName: String,
         withExtension: String? = nil,
-        subdirectory subpath: String? = nil
+        subdirectory subpath: String? = nil,
+        bundle: Bundle = .module
     ) -> Data? {
-        guard let url = Bundle.main.url(
+        guard let url = bundle.url(
             forResource: fileName,
             withExtension: withExtension,
             subdirectory: subpath
         )  else {
-            print("Unable to locate \(fileName).\(withExtension ?? "") at Bundle Resources.")
+            print("Unable to locate \(fileName).\(withExtension ?? "") at Bundle (\(bundle)) Resources.")
             return nil
         }
         return DataFile.read(from: url)

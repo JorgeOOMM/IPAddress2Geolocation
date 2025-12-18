@@ -12,7 +12,7 @@ extension FileManager {
     /// - Parameter directory: String
     ///
     /// - Returns: Bool
-    func create(directory: String) -> Bool {
+    func createDirectoryIfNeeded(directory: String) -> Bool {
         if !self.fileExists(atPath: directory) {
             do {
                 try self.createDirectory(

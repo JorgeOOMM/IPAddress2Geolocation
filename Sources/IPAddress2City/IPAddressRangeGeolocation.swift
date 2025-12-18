@@ -55,10 +55,12 @@ extension IPAddressRangeGeolocation: IPAddressPrintable {
     public func printAddress(for address: String) {
         print("Printing geo location record for: \(address)")
         
-        if let addressUInt32 = stringIPToIPNumber(string: address) {
-            if let location = locate(from: UInt32(bigEndian: addressUInt32)) {
-                print(location)
-            }
+        let addressUInt32 = stringIPToIPNumber(string: address)
+        guard addressUInt32 > 0 else {
+            return
+        }
+        if let location = locate(from: UInt32(bigEndian: addressUInt32)) {
+            print(location)
         }
     }
 }
