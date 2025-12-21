@@ -11,39 +11,41 @@ public protocol IPAddressPrintable {
     ///  Print a geo location from a IP address string
     ///
     /// - Parameter address: IP address string
-    func printAddress(for address: String)
+    func printAddress(for address: String) throws
 }
 
 // MARK: AddressRangeGeolocation object
 /// Locate the address range, country and country subdivision for a IP address
-public class IPAddressRangeGeolocation: IPAddressConverterBE {
-    private var locator: IPAddressRangeLocatorProtocol
+public class IPAddressRangeGeolocation {
+    private var locator: LocatorProtocol
     
-    public init(locator: IPAddressRangeLocatorProtocol = IPAddressRangeBinaryFileLocator()) {
+    public init(locator: LocatorProtocol = IPAddressRangeBinaryFileLocator()) {
         
         // Initialize the LocatorProtocol interface
         self.locator = locator
-        
-        super.init()
         
         // Prepare the infrastructure
         if !load() {
             print("Unable to prepare the basic infrastructure.")
         }
         // Test that the infrastructure works
-        printAddress(for: "102.130.125.86")
+        try? printAddress(for: "102.130.125.86")
     }
 }
 
 // MARK: CustomDebugStringConvertible
 extension IPRangeLocation: CustomDebugStringConvertible {
     public var debugDescription: String {
-        let converter = IPAddressConverterBE()
-        let start = converter.numberIPToStringIP(number: UInt32(bigEndian: start))
-        let end = converter.numberIPToStringIP(number: UInt32(bigEndian: end))
-        let country = Countries.shared.name(for:alpha2) ?? ""
-        let flag = Countries.flag(from: alpha2)
-        return "\(subdiv) - \(country) [\(flag)] (\(start) - \(end))"
+
+        do {
+            let start = try IPAddressConverter.toString(number: UInt32(bigEndian: start))
+            let end = try IPAddressConverter.toString(number: UInt32(bigEndian: end))
+            let country = Countries.shared.name(for:alpha2) ?? ""
+            let flag = Countries.flag(from: alpha2)
+            return "\(subdiv) - \(country) [\(flag)] (\(start) - \(end))"
+        } catch {
+            return ""
+        }
     }
 }
 
@@ -52,10 +54,10 @@ extension IPAddressRangeGeolocation: IPAddressPrintable {
     /// Print a geo location from a IP address string
     ///
     /// - Parameter address: IP address string
-    public func printAddress(for address: String) {
+    public func printAddress(for address: String) throws {
         print("Printing geo location record for: \(address)")
         
-        let addressUInt32 = stringIPToIPNumber(string: address)
+        let addressUInt32 = try IPAddressConverter.toUInt32(string: address)
         guard addressUInt32 > 0 else {
             return
         }

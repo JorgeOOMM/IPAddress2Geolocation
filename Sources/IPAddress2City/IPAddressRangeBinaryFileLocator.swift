@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: IPAddressRangeBinaryFileLocator
-public class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
+public class IPAddressRangeBinaryFileLocator: LocatorProtocol {
     private var subdivs: [Substring] = []
     private var fileHandle: FileHandle = .nullDevice
     private var fileSize: UInt64 = 0
@@ -69,7 +69,7 @@ public class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
     func recordLocation(from record: IPRangeLocationIdx) throws -> IPRangeLocation {
         guard let alpha2 = Countries.shared.code(for: UInt32(record.alpha2Idx)) else {
             assertionFailure("Unexpected invalid index for alpha2.")
-            throw IPAddress2CityError.alpha2IndexError
+            throw IPAddress2CityError.alpha2Error
         }
         let subdiv = self.subdivs[Int(record.subdivIdx)].replacingOccurrences(of: "#", with: " - ")
         return IPRangeLocation(

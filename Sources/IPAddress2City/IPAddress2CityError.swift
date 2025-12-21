@@ -12,6 +12,7 @@ enum IPAddress2CityError: Error {
     case conversionError
     case locationError
     case memoryError
-    case alpha2IndexError
+    case alpha2Error
     case parameterError
+    case flagError
 }

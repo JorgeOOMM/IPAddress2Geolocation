@@ -9,7 +9,7 @@ import XCTest
 @testable import IPAddress2City
 
 extension IPRangeLocation {
-    static var null = IPRangeLocation(start: 0, end: 0, alpha2: "", subdiv: "")
+    nonisolated(unsafe) static let null = IPRangeLocation(start: 0, end: 0, alpha2: "", subdiv: "")
 }
 
 final class IPAddressGeolocationLookupTests: XCTestCase {
@@ -25,11 +25,11 @@ final class IPAddressGeolocationLookupTests: XCTestCase {
     }
 
     func testValidLocation()throws {
-        let location = try lookup.location(with: "102.130.125.86")
+        let location = try lookup.locate(with: "102.130.125.86")
         
-        let start = lookup.start(with:location)
-        let end = lookup.end(with:location)
-        let country = lookup.country(with:location)
+        let start = try lookup.start(with:location)
+        let end = try lookup.end(with:location)
+        let country = try lookup.country(with:location)
         let subdivision = lookup.subdivision(with:location)
         let flag = lookup.flag(with:location)
         
@@ -42,104 +42,104 @@ final class IPAddressGeolocationLookupTests: XCTestCase {
     }
     
     func testValidStartLocation() throws {
-        let location = try lookup.location(with: "102.130.125.86")
-        XCTAssert("102.130.114.0" == lookup.start(with:location))
+        let location = try lookup.locate(with: "102.130.125.86")
+        XCTAssert(try lookup.start(with:location) == "102.130.114.0")
     }
     
     func testValidEndLocation() throws {
-        let location = try lookup.location(with: "102.130.125.86")
-        XCTAssert("102.130.126.255" == lookup.end(with:location))
+        let location = try lookup.locate(with: "102.130.125.86")
+        XCTAssert(try lookup.end(with:location) == "102.130.126.255")
     }
     
     func testValidCountryLocation() throws {
-        let location = try lookup.location(with: "102.130.125.86")
-        XCTAssert("South Africa" == lookup.country(with:location))
+        let location = try lookup.locate(with: "102.130.125.86")
+        XCTAssert(try lookup.country(with:location) == "South Africa")
     }
     func testValidFlagLocation()throws {
-        let location = try lookup.location(with: "102.130.125.86")
+        let location = try lookup.locate(with: "102.130.125.86")
         XCTAssert("🇿🇦" == lookup.flag(with:location))
     }
     
     func testValidSubdivisionLocation() throws {
-        let location = try lookup.location(with: "102.130.125.86")
+        let location = try lookup.locate(with: "102.130.125.86")
         XCTAssert(lookup.subdivision(with:location) == "Cape Town (Manenberg) - Western Cape")
     }
     
-    func testInvalidLocation() {
+    func testInvalidLocation() throws {
        
-        XCTAssertThrowsError(try lookup.location(with: ""))
-        XCTAssertThrowsError(try lookup.location(with: "...."))
-        XCTAssertThrowsError(try lookup.location(with: "..1.0."))
-        XCTAssertThrowsError(try lookup.location(with: ".1.0.10."))
-        XCTAssertThrowsError(try lookup.location(with: ".10.1.10."))
-        XCTAssertThrowsError(try lookup.location(with: ".10.0.10."))
-        XCTAssertThrowsError(try lookup.location(with: "10..10.10."))
-        XCTAssertThrowsError(try lookup.location(with: "266.25.10.10."))
-        XCTAssertThrowsError(try lookup.location(with: "0.266.25.10.10"))
+        XCTAssertThrowsError(try lookup.locate(with: ""))
+        XCTAssertThrowsError(try lookup.locate(with: "...."))
+        XCTAssertThrowsError(try lookup.locate(with: "..1.0."))
+        XCTAssertThrowsError(try lookup.locate(with: ".1.0.10."))
+        XCTAssertThrowsError(try lookup.locate(with: ".10.1.10."))
+        XCTAssertThrowsError(try lookup.locate(with: ".10.0.10."))
+        XCTAssertThrowsError(try lookup.locate(with: "10..10.10."))
+        XCTAssertThrowsError(try lookup.locate(with: "266.25.10.10."))
+        XCTAssertThrowsError(try lookup.locate(with: "0.266.25.10.10"))
     }
     
-    func testInvalidEmptyFields() {
-        XCTAssert(lookup.start(with: .null).isEmpty)
-        XCTAssert(lookup.end(with: .null).isEmpty)
-        XCTAssert(lookup.country(with: .null).isEmpty)
+    func testInvalidEmptyFields() throws {
+        XCTAssertThrowsError(try lookup.start(with: .null))
+        XCTAssertThrowsError(try lookup.end(with: .null))
+        XCTAssertThrowsError(try lookup.country(with: .null))
         XCTAssert(lookup.flag(with: .null).isEmpty)
         XCTAssert(lookup.subdivision(with: .null).isEmpty)
     }
     
-    func testInvalidStartField() {
-        XCTAssertNil(lookup.start(for: ""))
-        XCTAssertNil(lookup.start(for: "...."))
-        XCTAssertNil(lookup.start(for: "..1.0."))
-        XCTAssertNil(lookup.start(for: ".1.0.10."))
-        XCTAssertNil(lookup.start(for: ".10.1.10."))
-        XCTAssertNil(lookup.start(for: ".10.0.10."))
-        XCTAssertNil(lookup.start(for:"10..10.10."))
-        XCTAssertNil(lookup.start(for:"266.25.10.10."))
-        XCTAssertNil(lookup.start(for:"0.266.25.10.10"))
+    func testInvalidStartField() throws{
+        XCTAssertThrowsError(try lookup.start(for: ""))
+        XCTAssertThrowsError(try lookup.start(for: "...."))
+        XCTAssertThrowsError(try lookup.start(for: "..1.0."))
+        XCTAssertThrowsError(try lookup.start(for: ".1.0.10."))
+        XCTAssertThrowsError(try lookup.start(for: ".10.1.10."))
+        XCTAssertThrowsError(try lookup.start(for: ".10.0.10."))
+        XCTAssertThrowsError(try lookup.start(for:"10..10.10."))
+        XCTAssertThrowsError(try lookup.start(for:"266.25.10.10."))
+        XCTAssertThrowsError(try lookup.start(for:"0.266.25.10.10"))
     }
-    func testInvalidEndField() {
-        XCTAssertNil(lookup.end(for: ""))
-        XCTAssertNil(lookup.end(for: "...."))
-        XCTAssertNil(lookup.end(for: "..1.0."))
-        XCTAssertNil(lookup.end(for: ".1.0.10."))
-        XCTAssertNil(lookup.end(for: ".10.1.10."))
-        XCTAssertNil(lookup.end(for: ".10.0.10."))
-        XCTAssertNil(lookup.end(for:"10..10.10."))
-        XCTAssertNil(lookup.end(for:"266.25.10.10."))
-        XCTAssertNil(lookup.end(for:"0.266.25.10.10"))
+    func testInvalidEndField() throws{
+        XCTAssertThrowsError(try lookup.end(for: ""))
+        XCTAssertThrowsError(try lookup.end(for: "...."))
+        XCTAssertThrowsError(try lookup.end(for: "..1.0."))
+        XCTAssertThrowsError(try lookup.end(for: ".1.0.10."))
+        XCTAssertThrowsError(try lookup.end(for: ".10.1.10."))
+        XCTAssertThrowsError(try lookup.end(for: ".10.0.10."))
+        XCTAssertThrowsError(try lookup.end(for:"10..10.10."))
+        XCTAssertThrowsError(try lookup.end(for:"266.25.10.10."))
+        XCTAssertThrowsError(try lookup.end(for:"0.266.25.10.10"))
     }
-    func testInvalidCountryField() {
-        XCTAssertNil(lookup.country(for: ""))
-        XCTAssertNil(lookup.country(for: "...."))
-        XCTAssertNil(lookup.country(for: "..1.0."))
-        XCTAssertNil(lookup.country(for: ".1.0.10."))
-        XCTAssertNil(lookup.country(for: ".10.1.10."))
-        XCTAssertNil(lookup.country(for: ".10.0.10."))
-        XCTAssertNil(lookup.country(for:"10..10.10."))
-        XCTAssertNil(lookup.country(for:"266.25.10.10."))
-        XCTAssertNil(lookup.country(for:"0.266.25.10.10"))
+    func testInvalidCountryField()throws {
+        XCTAssertThrowsError(try lookup.country(for: ""))
+        XCTAssertThrowsError(try lookup.country(for: "...."))
+        XCTAssertThrowsError(try lookup.country(for: "..1.0."))
+        XCTAssertThrowsError(try lookup.country(for: ".1.0.10."))
+        XCTAssertThrowsError(try lookup.country(for: ".10.1.10."))
+        XCTAssertThrowsError(try lookup.country(for: ".10.0.10."))
+        XCTAssertThrowsError(try lookup.country(for:"10..10.10."))
+        XCTAssertThrowsError(try lookup.country(for:"266.25.10.10."))
+        XCTAssertThrowsError(try lookup.country(for:"0.266.25.10.10"))
     }
-    func testInvalidFlagField() {
-        XCTAssertNil(lookup.flag(for: ""))
-        XCTAssertNil(lookup.flag(for: "...."))
-        XCTAssertNil(lookup.flag(for: "..1.0."))
-        XCTAssertNil(lookup.flag(for: ".1.0.10."))
-        XCTAssertNil(lookup.flag(for: ".10.1.10."))
-        XCTAssertNil(lookup.flag(for: ".10.0.10."))
-        XCTAssertNil(lookup.flag(for:"10..10.10."))
-        XCTAssertNil(lookup.flag(for:"266.25.10.10."))
-        XCTAssertNil(lookup.flag(for:"0.266.25.10.10"))
+    func testInvalidFlagField()throws {
+        XCTAssertThrowsError(try lookup.flag(for: ""))
+        XCTAssertThrowsError(try lookup.flag(for: "...."))
+        XCTAssertThrowsError(try lookup.flag(for: "..1.0."))
+        XCTAssertThrowsError(try lookup.flag(for: ".1.0.10."))
+        XCTAssertThrowsError(try lookup.flag(for: ".10.1.10."))
+        XCTAssertThrowsError(try lookup.flag(for: ".10.0.10."))
+        XCTAssertThrowsError(try lookup.flag(for:"10..10.10."))
+        XCTAssertThrowsError(try lookup.flag(for:"266.25.10.10."))
+        XCTAssertThrowsError(try lookup.flag(for:"0.266.25.10.10"))
     }
-    func testInvalidSubdivField() {
-        XCTAssertNil(lookup.subdivision(for: ""))
-        XCTAssertNil(lookup.subdivision(for: "...."))
-        XCTAssertNil(lookup.subdivision(for: "..1.0."))
-        XCTAssertNil(lookup.subdivision(for: ".1.0.10."))
-        XCTAssertNil(lookup.subdivision(for: ".10.1.10."))
-        XCTAssertNil(lookup.subdivision(for: ".10.0.10."))
-        XCTAssertNil(lookup.subdivision(for:"10..10.10."))
-        XCTAssertNil(lookup.subdivision(for:"266.25.10.10."))
-        XCTAssertNil(lookup.subdivision(for:"0.266.25.10.10"))
+    func testInvalidSubdivField() throws{
+        XCTAssertThrowsError(try lookup.subdivision(for: ""))
+        XCTAssertThrowsError(try lookup.subdivision(for: "...."))
+        XCTAssertThrowsError(try lookup.subdivision(for: "..1.0."))
+        XCTAssertThrowsError(try lookup.subdivision(for: ".1.0.10."))
+        XCTAssertThrowsError(try lookup.subdivision(for: ".10.1.10."))
+        XCTAssertThrowsError(try lookup.subdivision(for: ".10.0.10."))
+        XCTAssertThrowsError(try lookup.subdivision(for:"10..10.10."))
+        XCTAssertThrowsError(try lookup.subdivision(for:"266.25.10.10."))
+        XCTAssertThrowsError(try lookup.subdivision(for:"0.266.25.10.10"))
     }
     
 }

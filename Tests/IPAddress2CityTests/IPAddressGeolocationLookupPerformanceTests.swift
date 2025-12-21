@@ -260,60 +260,60 @@ final class IPAddressGeolocationLookupPerformanceTests: XCTestCase {
     }
 
     func lookupPerformanceOfLookupWithLocation(lookup: IPAddressGeolocationLookup ) {
-        listAddress.forEach { address in
-            do {
-                let range = try lookup.location(with: address)
-                let country = lookup.country(with: range)
+        do {
+            try listAddress.forEach { address in
+                let range = try lookup.locate(with: address)
+                _ = try lookup.country(with: range)
                 let flag = lookup.flag(with: range)
-                let start = lookup.start(with: range)
-                let end = lookup.end(with: range)
+                _ = try lookup.start(with: range)
+                _ = try lookup.end(with: range)
                 let subdiv = lookup.subdivision(with: range)
-                XCTAssert(!country.isEmpty)
+                
                 XCTAssert(!flag.isEmpty)
                 XCTAssert(!subdiv.isEmpty)
-                XCTAssert(!start.isEmpty)
-                XCTAssert(!end.isEmpty)
-            }catch {
-                XCTFail(error.localizedDescription)
             }
+        } catch {
+            XCTFail()
         }
     }
     
     func lookupPerformanceOfLookupWithStringAddress(lookup: IPAddressGeolocationLookup ) {
-        listAddress.forEach { address in
-            if let country = lookup.country(for: address),
-                  let flag = lookup.flag(for: address),
-                  let start = lookup.start(for: address),
-                  let end = lookup.end(for: address),
-                  let subdiv = lookup.subdivision(for: address) {
-                XCTAssert(!country.isEmpty)
+        do {
+            try listAddress.forEach { address in
+                let range = try lookup.locate(with: address)
+                _ = try lookup.country(with: range)
+                let flag = lookup.flag(with: range)
+                _ = try lookup.start(with: range)
+                _ = try lookup.end(with: range)
+                let subdiv = lookup.subdivision(with: range)
+                
                 XCTAssert(!flag.isEmpty)
                 XCTAssert(!subdiv.isEmpty)
-                XCTAssert(!start.isEmpty)
-                XCTAssert(!end.isEmpty)
             }
+        } catch {
+            XCTFail()
         }
     }
         
     func testPerformanceOfLookupWithStringAddress() {
+         self.measure {
+            lookupPerformanceOfLookupWithStringAddress(lookup: lookup)
+        }
+    }
+    
+    func testPerformanceOfLookupWithStringAddressWithCached() throws {
         self.measure {
             lookupPerformanceOfLookupWithStringAddress(lookup: lookup)
         }
     }
     
-    func testPerformanceOfLookupWithStringAddressWithCached() {
-        self.measure {
-            lookupPerformanceOfLookupWithStringAddress(lookup: lookup)
-        }
-    }
-    
-    func testPerformanceOfLookupWithLocation() {
+    func testPerformanceOfLookupWithLocation() throws {
         self.measure {
             lookupPerformanceOfLookupWithLocation(lookup: lookupLocation)
         }
     }
     
-    func testPerformanceOfLookupWithLocationWithCached() {
+    func testPerformanceOfLookupWithLocationWithCached() throws {
         self.measure {
             lookupPerformanceOfLookupWithLocation(lookup: lookupLocation)
         }

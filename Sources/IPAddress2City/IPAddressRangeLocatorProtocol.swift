@@ -5,8 +5,20 @@
 //  Created by Mac on 12/12/25.
 //
 
-// MARK: IPAddressRangeLocatorProtocol protocol
-/// Protocol for locate the `IPRange` location for a ip `address`
+// MARK: IPAddressStringRangeLocatorProtocol
+/// Protocol for locate the `IPRangeLocation` location for a ip `address` string
+public protocol IPAddressStringRangeLocatorProtocol {
+    /// Find the location for a netword address string
+    ///
+    /// - Parameter address:IP address rtring
+    ///
+    /// - Returns: IPRangeLocation
+    ///
+    func locate(with address: String) throws -> IPRangeLocation
+}
+
+// MARK: IPAddressRangeLocatorProtocol
+/// Protocol for locate the `IPRangeLocation` location for a ip `address` UInt32
 public protocol IPAddressRangeLocatorProtocol {
     /// Find the location for a netword address
     ///
@@ -17,6 +29,10 @@ public protocol IPAddressRangeLocatorProtocol {
     /// - Returns: IPRangeLocation?
     ///
     func locate(from address: UInt32) -> IPRangeLocation?
+}
+
+// MARK: IPAddressRangeLocatorProtocol protocol
+public protocol LocatorProtocol: IPAddressRangeLocatorProtocol {
     /// Load the location information
     ///
     /// - Returns: Bool

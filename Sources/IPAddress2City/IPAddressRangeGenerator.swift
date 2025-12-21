@@ -10,19 +10,19 @@ import Foundation
 
 // MARK: AddressGenerator
 protocol IPAddressGenerator {
-    func range(lower: String, upper: String) -> [String]
+    func range(lower: String, upper: String) throws -> [String]
 }
 // MARK: IPAddressRange
-class IPAddressRangeGenerator: IPAddressConverterLE, IPAddressGenerator {
-    func range(lower: String, upper: String) -> [String] {
+class IPAddressRangeGenerator: IPAddressGenerator {
+    func range(lower: String, upper: String) throws -> [String] {
         guard !(lower.isEmpty || upper.isEmpty) else {
             return []
         }
-        let lower = stringIPToIPNumber(string: lower)
+        let lower = try IPAddressConverterLE.toUInt32(string: lower)
         guard lower > 0 else {
             return []
         }
-        let upper = stringIPToIPNumber(string: upper)
+        let upper = try IPAddressConverterLE.toUInt32(string: upper)
         guard upper > 0 else {
             return []
         }
@@ -35,7 +35,7 @@ class IPAddressRangeGenerator: IPAddressConverterLE, IPAddressGenerator {
             through: upper,
             by: 1
         ) {
-            ips.append(numberIPToStringIP(number: index))
+            ips.append(try IPAddressConverterLE.toString(number: index))
         }
         return ips
     }

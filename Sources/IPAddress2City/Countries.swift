@@ -26,12 +26,51 @@ public final class Countries {
             indexes[code] = UInt32(index + 1)
         }
     }
+    
+    static public var localFlag: String {
+        var regionCode: String?
+        if #available(iOS 16, *) {
+            regionCode = NSLocale.current.region?.identifier
+        } else {
+            regionCode = NSLocale.current.regionCode
+        }
+        guard let regionCode = regionCode else {
+            // https://unicode.org/Public/emoji/14.0/emoji-test.txt
+            return "🏳"
+        }
+        return Countries.flag(from: regionCode)
+    }
+    
+    static public var localCountry: String {
+        var regionCode: String?
+        if #available(iOS 16, *) {
+            regionCode = NSLocale.current.region?.identifier
+        } else {
+            regionCode = NSLocale.current.regionCode
+        }
+        guard let regionCode = regionCode else {
+            return "Unknown"
+        }
+        
+        let id: String = Locale.identifier(fromComponents: [
+            NSLocale.Key.countryCode.rawValue: regionCode
+        ])
+        guard let name = (NSLocale.current as NSLocale).displayName(
+            forKey: .identifier,
+            value: id
+        ) else {
+            return "Unknown"
+        }
+        return name
+    }
+    
+    
     static func flag(from country: String) -> String {
         // The flags start at code point 0x1F1E6. The offset for "A" is 65. 0x1F1E6 - 65 = 127397
         let base: UInt32 = 127397
         var output = ""
         for unicodeScalars in country.uppercased().unicodeScalars {
-            if let scalar = UnicodeScalar(base + unicodeScalars.value) {
+            if let scalar = Unicode.Scalar(base + unicodeScalars.value) {
                 output.unicodeScalars.append(scalar)
             }
         }
