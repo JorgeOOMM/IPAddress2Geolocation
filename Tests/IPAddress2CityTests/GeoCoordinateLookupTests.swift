@@ -1,5 +1,5 @@
 //
-//  IPAddressGeolocationLookupTests.swift
+//  GeoAddressLookupTests.swift
 //
 //  Created by Mac on 15/12/25.
 //
@@ -38,12 +38,12 @@ final class GeoCoordinateLookupTests: XCTestCase {
     func testValidGeoCoordinate() async throws {
         let geoCoordinate = try await lookup.location(with: "Cape Town (Manenberg) - Western Cape - South Africa" )
         XCTAssert(geoCoordinate.name == "Manenberg")
-        XCTAssert( geoCoordinate.latitude == -33.9808841)
-        XCTAssert( geoCoordinate.longitude == 18.5562717)
+        XCTAssert(geoCoordinate.latitude == -33.9808841)
+        XCTAssert(geoCoordinate.longitude == 18.5562717)
     }
     
     
-    func testInvalidGeoCoordinate()  async throws {
+    func testInvalidGeoCoordinate() async throws {
         await xCTAssertThrowsError(try await lookup.location(with: ""))
     }
 }

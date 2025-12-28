@@ -9,12 +9,12 @@
 import Foundation
 
 // MARK: AddressGenerator
-protocol IPAddressGenerator {
+public protocol IPAddressGenerator {
     func range(lower: String, upper: String) throws -> [String]
 }
 // MARK: IPAddressRange
-class IPAddressRangeGenerator: IPAddressGenerator {
-    func range(lower: String, upper: String) throws -> [String] {
+public class IPAddressRangeGenerator: IPAddressGenerator {
+    public func range(lower: String, upper: String) throws -> [String] {
         guard !(lower.isEmpty || upper.isEmpty) else {
             return []
         }
@@ -38,5 +38,9 @@ class IPAddressRangeGenerator: IPAddressGenerator {
             ips.append(try IPAddressConverterLE.toString(number: index))
         }
         return ips
+    }
+    
+    public init() {
+        
     }
 }

@@ -40,7 +40,6 @@ public struct IPRangeLocationIdx: IPRangeLocationProtocol {
         self.alpha2Idx = alpha2Idx
         self.subdivIdx = subdivIdx
     }
-    
 }
 
 // MARK: GeoCoordinate

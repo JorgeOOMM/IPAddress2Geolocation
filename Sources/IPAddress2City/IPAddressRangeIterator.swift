@@ -6,7 +6,7 @@
 //
 
 // MARK: IPAddressRangeIterator
-class IPAddressRangeIterator {
+public class IPAddressRangeIterator {
     
     private let collection: IPAddressRangeCollection
     private var index = 0
@@ -17,7 +17,7 @@ class IPAddressRangeIterator {
 }
 // MARK: IPAddressRangeIterator: IteratorProtocol
 extension IPAddressRangeIterator: IteratorProtocol {
-    func next() -> String? {
+    public func next() -> String? {
         defer { index += 1 }
         return index < self.collection.range.count ? collection.range[index] : nil
     }

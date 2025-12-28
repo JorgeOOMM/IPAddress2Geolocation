@@ -17,6 +17,10 @@ extension GeoCoordinate {
     }
 }
 
+public protocol GeoCoordinateLookupProtocol {
+    func location(with address: String) async throws -> GeoCoordinate
+}
+
 /// GeoCoordinateLookup is a class that locate a Geocoordinate type from Location Address string
 public class GeoCoordinateLookup: FileCacheable {
     typealias Handler = (Result<GeoCoordinate, Error>) -> Void
@@ -30,7 +34,7 @@ public class GeoCoordinateLookup: FileCacheable {
     }
 }
 // MARK: GeoCoordinateLookup
-extension GeoCoordinateLookup {
+extension GeoCoordinateLookup: GeoCoordinateLookupProtocol {
     public func location(with address: String) async throws -> GeoCoordinate {
         guard !address.isEmpty else {
             throw IPAddress2CityError.parameterError

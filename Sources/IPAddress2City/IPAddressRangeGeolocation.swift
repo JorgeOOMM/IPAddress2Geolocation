@@ -38,8 +38,8 @@ extension IPRangeLocation: CustomDebugStringConvertible {
     public var debugDescription: String {
 
         do {
-            let start = try IPAddressConverter.toString(number: UInt32(bigEndian: start))
-            let end = try IPAddressConverter.toString(number: UInt32(bigEndian: end))
+            let start = try IPAddressConverterBE.toString(number: UInt32(bigEndian: start))
+            let end = try IPAddressConverterBE.toString(number: UInt32(bigEndian: end))
             let country = Countries.shared.name(for:alpha2) ?? ""
             let flag = Countries.flag(from: alpha2)
             return "\(subdiv) - \(country) [\(flag)] (\(start) - \(end))"
@@ -57,11 +57,11 @@ extension IPAddressRangeGeolocation: IPAddressPrintable {
     public func printAddress(for address: String) throws {
         print("Printing geo location record for: \(address)")
         
-        let addressUInt32 = try IPAddressConverter.toUInt32(string: address)
+        let addressUInt32 = try IPAddressConverterBE.toUInt32(string: address)
         guard addressUInt32 > 0 else {
             return
         }
-        if let location = locate(from: UInt32(bigEndian: addressUInt32)) {
+        if let location = location(from: UInt32(bigEndian: addressUInt32)) {
             print(location)
         }
     }
@@ -70,12 +70,12 @@ extension IPAddressRangeGeolocation: IPAddressPrintable {
 // MARK: LocatorProtocol
 extension IPAddressRangeGeolocation: IPAddressRangeLocatorProtocol {
     
-    public func locate(from address: UInt32) -> IPRangeLocation? {
+    public func location(from address: UInt32) -> IPRangeLocation? {
         guard address > 0 else {
             return nil
         }
         // Delegate in the inner locator
-        return locator.locate(from: address)
+        return locator.location(from: address)
     }
     
     /// Decompresing the binary files from Resource directory to Documents directory if not exist

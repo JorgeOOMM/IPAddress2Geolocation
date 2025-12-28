@@ -27,42 +27,42 @@ public final class Countries {
         }
     }
     
-    static public var localFlag: String {
-        var regionCode: String?
-        if #available(iOS 16, *) {
-            regionCode = NSLocale.current.region?.identifier
-        } else {
-            regionCode = NSLocale.current.regionCode
-        }
-        guard let regionCode = regionCode else {
-            // https://unicode.org/Public/emoji/14.0/emoji-test.txt
-            return "🏳"
-        }
-        return Countries.flag(from: regionCode)
-    }
-    
-    static public var localCountry: String {
-        var regionCode: String?
-        if #available(iOS 16, *) {
-            regionCode = NSLocale.current.region?.identifier
-        } else {
-            regionCode = NSLocale.current.regionCode
-        }
-        guard let regionCode = regionCode else {
-            return "Unknown"
-        }
-        
-        let id: String = Locale.identifier(fromComponents: [
-            NSLocale.Key.countryCode.rawValue: regionCode
-        ])
-        guard let name = (NSLocale.current as NSLocale).displayName(
-            forKey: .identifier,
-            value: id
-        ) else {
-            return "Unknown"
-        }
-        return name
-    }
+//    static public var localFlag: String {
+//        var regionCode: String?
+//        if #available(iOS 16, *) {
+//            regionCode = NSLocale.current.region?.identifier
+//        } else {
+//            regionCode = NSLocale.current.regionCode
+//        }
+//        guard let regionCode = regionCode else {
+//            // https://unicode.org/Public/emoji/14.0/emoji-test.txt
+//            return "🏳"
+//        }
+//        return Countries.flag(from: regionCode)
+//    }
+//    
+//    static public var localCountry: String {
+//        var regionCode: String?
+//        if #available(iOS 16, *) {
+//            regionCode = NSLocale.current.region?.identifier
+//        } else {
+//            regionCode = NSLocale.current.regionCode
+//        }
+//        guard let regionCode = regionCode else {
+//            return "Unknown"
+//        }
+//        
+//        let id: String = Locale.identifier(fromComponents: [
+//            NSLocale.Key.countryCode.rawValue: regionCode
+//        ])
+//        guard let name = (NSLocale.current as NSLocale).displayName(
+//            forKey: .identifier,
+//            value: id
+//        ) else {
+//            return "Unknown"
+//        }
+//        return name
+//    }
     
     
     static func flag(from country: String) -> String {

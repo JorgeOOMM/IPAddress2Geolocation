@@ -2,9 +2,9 @@ IPAddress2City library
 
 This library geo locate and geo coordinate a internet IP address
 
-Create the IPAddressGeolocationLookup object for geo locate IP address
+Create the GeoAddressLookup object for geo locate IP address
 
-> let lookup = IPAddressGeolocationLookup()
+> let lookup = GeoAddressLookup()
 
 Get the geo location of ip address and print the country with the flag
 

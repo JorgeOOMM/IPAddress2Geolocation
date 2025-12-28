@@ -6,10 +6,10 @@
 //
 
 // MARK: IPStringRangeCollection
-class IPAddressRangeCollection {
+public class IPAddressRangeCollection {
     internal lazy var range = [String]()
     
-    init?(lower: String, upper: String, ranger: IPAddressGenerator = IPAddressRangeGenerator()) throws {
+    public init(lower: String, upper: String, ranger: IPAddressGenerator = IPAddressRangeGenerator()) throws {
         self.range = try ranger.range(lower: lower, upper: upper)
     }
 }

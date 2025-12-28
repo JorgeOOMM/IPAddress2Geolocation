@@ -1,14 +1,16 @@
 //
-//  IPAddressGeolocationLookup.swift
-//  IPAddressGeolocationLookup
+//  GeoAddressLookup.swift
+//  GeoAddressLookup
 //
 //  Created by Mac on 11/12/25.
 //
 import Foundation
 
-// MARK: IPAddressGeolocationLookup: FileCacheable
-/// IPAddressGeolocationLookup is a class thast locate a IPRange types from IP Address string
-public class IPAddressGeolocationLookup: FileCacheable {
+
+
+// MARK: GeoAddressLookup: FileCacheable
+/// GeoAddressLookup is a class thast locate a IPRange types from IP Address string
+public class GeoAddressLookup: FileCacheable {
     
     typealias Handler = (Result<IPRangeLocation, Error>) -> Void
     
@@ -21,9 +23,8 @@ public class IPAddressGeolocationLookup: FileCacheable {
     }
 }
 
-
-// MARK: IPAddressGeolocationLookup
-extension IPAddressGeolocationLookup: IPAddressStringRangeLocatorProtocol {
+// MARK: GeoAddressLookup
+extension GeoAddressLookup: IPAddressStringRangeLocatorProtocol {
     
     /// Find the location for a network address string using cached data if available
     ///
@@ -31,7 +32,7 @@ extension IPAddressGeolocationLookup: IPAddressStringRangeLocatorProtocol {
     ///
     /// - Returns: IPRangeLocation
     ///
-    public func locate(with address: String) throws -> IPRangeLocation {
+    public func location(with address: String) throws -> IPRangeLocation {
         guard !address.isEmpty else {
             print("Empty parameter address error.")
             throw IPAddress2CityError.parameterError
@@ -40,12 +41,12 @@ extension IPAddressGeolocationLookup: IPAddressStringRangeLocatorProtocol {
             // Cache hit
             return cached
         }
-        let addressUInt32 = try IPAddressConverter.toUInt32(string: address)
+        let addressUInt32 = try IPAddressConverterBE.toUInt32(string: address)
         guard addressUInt32 > 0 else {
             print("Conversion of address \(address) failed.")
             throw IPAddress2CityError.conversionError
         }
-        if let location = locator.locate(from: UInt32(bigEndian: addressUInt32)) {
+        if let location = locator.location(from: UInt32(bigEndian: addressUInt32)) {
             self.cache[address] = location
             return location
         } else {
@@ -55,8 +56,9 @@ extension IPAddressGeolocationLookup: IPAddressStringRangeLocatorProtocol {
     }
 }
 
+
 // MARK: IPAddressPrintable
-extension IPAddressGeolocationLookup: IPAddressPrintable {
+extension GeoAddressLookup: IPAddressPrintable {
     ///  Print a geo location from a IP address string
     ///
     /// - Parameter address: IP address string
@@ -65,13 +67,13 @@ extension IPAddressGeolocationLookup: IPAddressPrintable {
     }
 }
 
-// MARK: IPAddressGeolocationLookup
-extension IPAddressGeolocationLookup {
+// MARK: GeoAddressLookup
+extension GeoAddressLookup {
     public func start(with location: IPRangeLocation) throws -> String {
-        try IPAddressConverter.toString(number: UInt32(bigEndian: location.start))
+        try IPAddressConverterBE.toString(number: UInt32(bigEndian: location.start))
     }
     public func end(with location: IPRangeLocation) throws -> String {
-        try IPAddressConverter.toString(number: UInt32(bigEndian: location.end))
+        try IPAddressConverterBE.toString(number: UInt32(bigEndian: location.end))
     }
     public func country(with location: IPRangeLocation) throws -> String {
         guard let country = Countries.shared.name(for: location.alpha2) else {
@@ -87,26 +89,26 @@ extension IPAddressGeolocationLookup {
     }
 }
 
-// MARK: IPAddressGeolocationLookup
-extension IPAddressGeolocationLookup {
+// MARK: GeoAddressLookup
+extension GeoAddressLookup {
     public func country(for address: String) throws -> String {
-        let range = try locate(with: address)
+        let range = try location(with: address)
         return try self.country(with: range)
     }
     public func start(for address: String) throws -> String {
-        let range = try locate(with: address)
+        let range = try location(with: address)
         return try self.start(with: range)
     }
     public func end(for address: String) throws -> String {
-        let range = try locate(with: address)
+        let range = try location(with: address)
         return try self.end(with: range)
     }
     public func subdivision(for address: String) throws -> String {
-        let range = try locate(with: address)
+        let range = try location(with: address)
         return self.subdivision(with: range)
     }
     public func flag(for address: String) throws -> String {
-        let range = try locate(with: address)
+        let range = try location(with: address)
         return self.flag(with: range)
     }
 }

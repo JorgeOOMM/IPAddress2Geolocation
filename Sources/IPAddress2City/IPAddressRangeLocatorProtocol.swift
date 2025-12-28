@@ -14,7 +14,7 @@ public protocol IPAddressStringRangeLocatorProtocol {
     ///
     /// - Returns: IPRangeLocation
     ///
-    func locate(with address: String) throws -> IPRangeLocation
+    func location(with address: String) throws -> IPRangeLocation
 }
 
 // MARK: IPAddressRangeLocatorProtocol
@@ -28,7 +28,7 @@ public protocol IPAddressRangeLocatorProtocol {
     ///
     /// - Returns: IPRangeLocation?
     ///
-    func locate(from address: UInt32) -> IPRangeLocation?
+    func location(from address: UInt32) -> IPRangeLocation?
 }
 
 // MARK: IPAddressRangeLocatorProtocol protocol

@@ -93,7 +93,7 @@ public class IPAddressRangeBinaryFileLocator: LocatorProtocol {
     ///  If arr[mid] is less than the target value, set the start to mid + 1 .
     ///
     ///
-    public func locate(from address: UInt32) -> IPRangeLocation? {
+    public func location(from address: UInt32) -> IPRangeLocation? {
         var lowIndex = 0
         var highIndex = Int(fileSize) / sizeofRange
         var midIndex = 0

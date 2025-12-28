@@ -68,3 +68,4 @@ public struct GeoCoordinateCoder: GeoCoordinateCoderProtocol {
         }
     }
 }
+

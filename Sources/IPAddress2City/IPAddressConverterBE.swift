@@ -1,20 +1,15 @@
 //
-//  IPAddressConverter.swift
+//  IPAddressConverterBE.swift
 //  IPAddress2City
 //
 //  Created by Mac on 12/12/25.
 //
 
+import Foundation
 
-// MARK: IPAddressConverter - Big endian
-public class IPAddressConverter: IPAddressable {
-    
-}
-
-
-// MARK: IPAddressConverter - Little endian
-public class IPAddressConverterLE: IPAddressable {
-    /// Convert IP address string to UInt32 host endian
+// MARK: IPAddressConverterBE
+public class IPAddressConverterBE: IPAddressable {
+    /// Convert IP address string to UInt32 network endian
     ///
     /// - Parameter string: Address string
     ///
@@ -26,13 +21,13 @@ public class IPAddressConverterLE: IPAddressable {
             throw IPAddress2CityError.parameterError
         }
         var numValue: UInt32 = 0
-        for index in stride(from: 3, through: 0, by: -1) {
-            numValue += octets[3 - index] << (index * 8)
+        for index in stride(from: 0, through: 3, by: 1) {
+            numValue += octets[index] << (index * 8)
         }
         return numValue
     }
     
-    /// Convert IP address UInt32 in host endian to String
+    /// Convert IP address UInt32 in network endian to String
     ///
     /// - Parameter number:Address number
     ///
@@ -42,10 +37,10 @@ public class IPAddressConverterLE: IPAddressable {
         guard number > 0 else {
             throw IPAddress2CityError.parameterError
         }
-        let octet3 = number & 0xFF
-        let octet2 = (number >> 8) & 0xFF
-        let octet1 = (number >> 16) & 0xFF
-        let octet0 = (number >> 24) & 0xFF
+        let octet0 = number & 0xFF
+        let octet1 = (number >> 8) & 0xFF
+        let octet2 = (number >> 16) & 0xFF
+        let octet3 = (number >> 24) & 0xFF
         
         return "\(octet0).\(octet1).\(octet2).\(octet3)"
     }

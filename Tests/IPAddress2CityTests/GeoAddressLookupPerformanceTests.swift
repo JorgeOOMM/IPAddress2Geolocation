@@ -1,5 +1,5 @@
 //
-//  IPAddressGeolocationLookupPerformanceTests.swift
+//  GeoAddressLookupPerformanceTests.swift
 //  IPAddress2City
 //
 //  Created by Mac on 15/12/25.
@@ -248,8 +248,8 @@ let listAddress: [String] = [
 
 final class IPAddressGeolocationLookupPerformanceTests: XCTestCase {
     
-    let lookup = IPAddressGeolocationLookup(locator: IPAddressRangeGeolocation())
-    let lookupLocation = IPAddressGeolocationLookup(locator: IPAddressRangeGeolocation())
+    let lookup = GeoAddressLookup(locator: IPAddressRangeGeolocation())
+    let lookupLocation = GeoAddressLookup(locator: IPAddressRangeGeolocation())
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -259,7 +259,7 @@ final class IPAddressGeolocationLookupPerformanceTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func lookupPerformanceOfLookupWithLocation(lookup: IPAddressGeolocationLookup ) {
+    func lookupPerformanceOfLookupWithLocation(lookup: GeoAddressLookup ) {
         do {
             try listAddress.forEach { address in
                 let range = try lookup.locate(with: address)
@@ -277,7 +277,7 @@ final class IPAddressGeolocationLookupPerformanceTests: XCTestCase {
         }
     }
     
-    func lookupPerformanceOfLookupWithStringAddress(lookup: IPAddressGeolocationLookup ) {
+    func lookupPerformanceOfLookupWithStringAddress(lookup: GeoAddressLookup ) {
         do {
             try listAddress.forEach { address in
                 let range = try lookup.locate(with: address)
