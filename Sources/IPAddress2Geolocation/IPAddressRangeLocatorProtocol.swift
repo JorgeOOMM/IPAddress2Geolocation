@@ -1,6 +1,6 @@
 //
 //  IPAddressRangeLocatorProtocol.swift
-//  IPAddress2City
+//  IPAddress2Geolocation
 //
 //  Created by Mac on 12/12/25.
 //

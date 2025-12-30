@@ -1,6 +1,6 @@
 //
 //  String+Slice.swift
-//  IPAddress2City
+//  IPAddress2Geolocation
 //
 //  Created by Mac on 10/12/25.
 //

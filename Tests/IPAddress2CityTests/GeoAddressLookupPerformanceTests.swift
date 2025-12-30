@@ -1,12 +1,12 @@
 //
-//  GeoAddressLookupPerformanceTests.swift
-//  IPAddress2City
+//  IPAddress2LocationPerformanceTests.swift
+//  IPAddress2Geolocation
 //
 //  Created by Mac on 15/12/25.
 //
 
 import XCTest
-@testable import IPAddress2City
+@testable import IPAddress2Geolocation
 
 let listAddress: [String] = [
     "101.47.17.247",
@@ -248,8 +248,8 @@ let listAddress: [String] = [
 
 final class IPAddressGeolocationLookupPerformanceTests: XCTestCase {
     
-    let lookup = GeoAddressLookup(locator: IPAddressRangeGeolocation())
-    let lookupLocation = GeoAddressLookup(locator: IPAddressRangeGeolocation())
+    let lookup = IPAddress2Location(locator: IPAddressRangeGeolocation())
+    let lookupLocation = IPAddress2Location(locator: IPAddressRangeGeolocation())
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -259,7 +259,7 @@ final class IPAddressGeolocationLookupPerformanceTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func lookupPerformanceOfLookupWithLocation(lookup: GeoAddressLookup ) {
+    func lookupPerformanceOfLookupWithLocation(lookup: IPAddress2Location ) {
         do {
             try listAddress.forEach { address in
                 let range = try lookup.locate(with: address)
@@ -277,7 +277,7 @@ final class IPAddressGeolocationLookupPerformanceTests: XCTestCase {
         }
     }
     
-    func lookupPerformanceOfLookupWithStringAddress(lookup: GeoAddressLookup ) {
+    func lookupPerformanceOfLookupWithStringAddress(lookup: IPAddress2Location ) {
         do {
             try listAddress.forEach { address in
                 let range = try lookup.locate(with: address)

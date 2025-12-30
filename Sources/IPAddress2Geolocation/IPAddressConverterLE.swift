@@ -1,6 +1,6 @@
 //
 //  IPAddressConverterLE.swift
-//  IPAddress2City
+//  IPAddress2Geolocation
 //
 //  Created by Mac on 12/12/25.
 //
@@ -18,7 +18,7 @@ public class IPAddressConverterLE: IPAddressable {
     public static func toUInt32(string: String) throws -> UInt32 {
         let octets: [UInt32] = string.split(separator: ".").compactMap { UInt32($0) }
         guard octets.count == 4 else {
-            throw IPAddress2CityError.parameterError
+            throw IPAddress2GeolocationError.parameterError
         }
         var numValue: UInt32 = 0
         for index in stride(from: 3, through: 0, by: -1) {
@@ -35,7 +35,7 @@ public class IPAddressConverterLE: IPAddressable {
     ///
     public static func toString(number: UInt32) throws -> String {
         guard number > 0 else {
-            throw IPAddress2CityError.parameterError
+            throw IPAddress2GeolocationError.parameterError
         }
         let octet3 = number & 0xFF
         let octet2 = (number >> 8) & 0xFF

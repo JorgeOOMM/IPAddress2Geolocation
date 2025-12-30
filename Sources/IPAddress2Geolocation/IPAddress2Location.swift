@@ -1,16 +1,14 @@
 //
-//  GeoAddressLookup.swift
-//  GeoAddressLookup
+//  IPAddress2Location.swift
+//  IPAddress2Location
 //
 //  Created by Mac on 11/12/25.
 //
 import Foundation
 
-
-
-// MARK: GeoAddressLookup: FileCacheable
-/// GeoAddressLookup is a class thast locate a IPRange types from IP Address string
-public class GeoAddressLookup: FileCacheable {
+// MARK: IPAddress2Location: FileCacheable
+/// IPAddress2Location is a class thast locate a IPRange types from IP Address string
+public class IPAddress2Location: FileCacheable {
     
     typealias Handler = (Result<IPRangeLocation, Error>) -> Void
     
@@ -23,8 +21,8 @@ public class GeoAddressLookup: FileCacheable {
     }
 }
 
-// MARK: GeoAddressLookup
-extension GeoAddressLookup: IPAddressStringRangeLocatorProtocol {
+// MARK: IPAddress2Location
+extension IPAddress2Location: IPAddressStringRangeLocatorProtocol {
     
     /// Find the location for a network address string using cached data if available
     ///
@@ -35,7 +33,7 @@ extension GeoAddressLookup: IPAddressStringRangeLocatorProtocol {
     public func location(with address: String) throws -> IPRangeLocation {
         guard !address.isEmpty else {
             print("Empty parameter address error.")
-            throw IPAddress2CityError.parameterError
+            throw IPAddress2GeolocationError.parameterError
         }
         if let cached = cache[address] {
             // Cache hit
@@ -44,21 +42,21 @@ extension GeoAddressLookup: IPAddressStringRangeLocatorProtocol {
         let addressUInt32 = try IPAddressConverterBE.toUInt32(string: address)
         guard addressUInt32 > 0 else {
             print("Conversion of address \(address) failed.")
-            throw IPAddress2CityError.conversionError
+            throw IPAddress2GeolocationError.conversionError
         }
         if let location = locator.location(from: UInt32(bigEndian: addressUInt32)) {
             self.cache[address] = location
             return location
         } else {
             print("The address \(address) not found in location database.")
-            throw IPAddress2CityError.locationError
+            throw IPAddress2GeolocationError.locationError
         }
     }
 }
 
 
 // MARK: IPAddressPrintable
-extension GeoAddressLookup: IPAddressPrintable {
+extension IPAddress2Location: IPAddressPrintable {
     ///  Print a geo location from a IP address string
     ///
     /// - Parameter address: IP address string
@@ -67,8 +65,8 @@ extension GeoAddressLookup: IPAddressPrintable {
     }
 }
 
-// MARK: GeoAddressLookup
-extension GeoAddressLookup {
+// MARK: IPAddress2Location
+extension IPAddress2Location {
     public func start(with location: IPRangeLocation) throws -> String {
         try IPAddressConverterBE.toString(number: UInt32(bigEndian: location.start))
     }
@@ -77,7 +75,7 @@ extension GeoAddressLookup {
     }
     public func country(with location: IPRangeLocation) throws -> String {
         guard let country = Countries.shared.name(for: location.alpha2) else {
-            throw IPAddress2CityError.alpha2Error
+            throw IPAddress2GeolocationError.alpha2Error
         }
         return country
     }
@@ -89,8 +87,8 @@ extension GeoAddressLookup {
     }
 }
 
-// MARK: GeoAddressLookup
-extension GeoAddressLookup {
+// MARK: IPAddress2Location
+extension IPAddress2Location {
     public func country(for address: String) throws -> String {
         let range = try location(with: address)
         return try self.country(with: range)

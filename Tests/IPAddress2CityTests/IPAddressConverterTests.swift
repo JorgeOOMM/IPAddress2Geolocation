@@ -6,7 +6,7 @@
 
 
 import XCTest
-@testable import IPAddress2City
+@testable import IPAddress2Geolocation
 
 final class IPAddressConverterTests: XCTestCase {
     

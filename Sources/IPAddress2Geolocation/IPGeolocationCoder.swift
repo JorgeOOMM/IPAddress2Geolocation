@@ -1,6 +1,6 @@
 //
-//  GeoCoordinateCoder.swift
-//  IPAddress2City
+//  IPGeolocationCoder.swift
+//  IPAddress2Geolocation
 //
 //  Created by Mac on 14/12/25.
 //
@@ -8,7 +8,7 @@
 import CoreLocation
 
 // MARK: GeocoderProtocol
-public protocol GeoCoordinateCoderProtocol {
+public protocol IPGeolocationCoderProtocol {
     /// Get the GeoCoordinate from a country location.
     /// For example country state, country province, country subdivision
     ///
@@ -20,11 +20,11 @@ public protocol GeoCoordinateCoderProtocol {
 }
 
 // MARK: Geocoder: GeocoderProtocol
-public struct GeoCoordinateCoder: GeoCoordinateCoderProtocol {
-    typealias GeoCoordinateCoderHandler = (Result<GeoCoordinate, Error>)
+public struct IPGeolocationCoder: IPGeolocationCoderProtocol {
+    typealias Handler = (Result<GeoCoordinate, Error>)
     private func geocodeIPAddress(
         with address: String,
-        completion: @escaping (GeoCoordinateCoderHandler) -> Void
+        completion: @escaping (Handler) -> Void
     ) {
         CLGeocoder().geocodeAddressString(address) { placemarks, error in
             if let error = error {
@@ -57,7 +57,7 @@ public struct GeoCoordinateCoder: GeoCoordinateCoderProtocol {
     ///
     public func coordinate(with address: String) async throws -> GeoCoordinate {
         try await withCheckedThrowingContinuation { continuation in
-            geocodeIPAddress(with: address ) { result in
+            geocodeIPAddress(with: address) { result in
                 switch result {
                 case .success(let coordinates):
                     continuation.resume(returning: coordinates)

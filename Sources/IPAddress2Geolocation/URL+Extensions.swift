@@ -1,6 +1,6 @@
 //
 //  URL+Extensions.swift
-//  IPAddress2City
+//  IPAddress2Geolocation
 //
 //  Created by Mac on 16/12/25.
 //

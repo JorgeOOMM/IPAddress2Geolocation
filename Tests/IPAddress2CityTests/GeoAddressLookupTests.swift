@@ -1,12 +1,12 @@
 //
-//  GeoAddressLookupTests.swift
+//  IPAddress2LocationTests.swift
 //
 //  Created by Mac on 15/12/25.
 //
 
 
 import XCTest
-@testable import IPAddress2City
+@testable import IPAddress2Geolocation
 
 extension IPRangeLocation {
     nonisolated(unsafe) static let null = IPRangeLocation(start: 0, end: 0, alpha2: "", subdiv: "")
@@ -14,7 +14,7 @@ extension IPRangeLocation {
 
 final class IPAddressGeolocationLookupTests: XCTestCase {
     
-    let lookup = GeoAddressLookup(locator: IPAddressRangeGeolocation())
+    let lookup = IPAddress2Location(locator: IPAddressRangeGeolocation())
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

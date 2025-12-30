@@ -1,6 +1,6 @@
 //
 //  LineReader.swift
-//  IPAddress2City
+//  IPAddress2Geolocation
 //
 //  Created by Mac on 9/12/25.
 //

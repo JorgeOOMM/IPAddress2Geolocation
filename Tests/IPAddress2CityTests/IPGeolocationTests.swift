@@ -1,12 +1,12 @@
 //
-//  GeoAddressLookupTests.swift
+//  IPAddress2LocationTests.swift
 //
 //  Created by Mac on 15/12/25.
 //
 
 
 import XCTest
-@testable import IPAddress2City
+@testable import IPAddress2Geolocation
 
 func xCTAssertThrowsError<T>(
     _ expression: @autoclosure () async throws -> T,
@@ -23,9 +23,9 @@ func xCTAssertThrowsError<T>(
     }
 }
 
-final class GeoCoordinateLookupTests: XCTestCase {
+final class IPGeolocationTests: XCTestCase {
     
-    let lookup = GeoCoordinateLookup(geocoder: GeoCoordinateCoder())
+    let lookup = IPGeolocation(geocoder: IPGeolocationCoder())
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
